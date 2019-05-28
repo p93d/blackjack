@@ -1,8 +1,6 @@
 import blackjack
 import click
 import time
-# deal, show_table, hand_values
-
 
 
 # Game Settings
@@ -40,7 +38,7 @@ def main(chips=starting_chips,
             bet*=black_jack_multiplier
             bjack = True
 
-
+    # main player action loop
     while True:
         blackjack.show_table(dealer, player, show_dealer, chips)
         # Check for 21
@@ -92,7 +90,8 @@ def main(chips=starting_chips,
                 if your_action.lower() == 'd':
                     # double your bet
                     bet *= 2
-
+                    
+                    # determine the hand value
                     if [c for c in blackjack.hand_values(player) if c <= 21] == []:
                         your_score = -1
                     else:
@@ -100,12 +99,14 @@ def main(chips=starting_chips,
                     break
                 else:
                     continue
-
+            
+        # otherwise the player is over 21, and loses
         else:
             click.echo('BUST.  You lose.')
             your_score = -1
             break
-
+    
+    # player activity is finished, so we can show the dealer's second card
     show_dealer = True
 
     # Dealer activity loop
@@ -115,7 +116,8 @@ def main(chips=starting_chips,
         # what the dealer has, you lose
         if your_score == -1:
             break
-
+        
+        # if you have blackjack, we've already checked the dealer's hand
         if bjack:
             break
     
