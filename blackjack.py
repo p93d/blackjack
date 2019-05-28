@@ -1,13 +1,10 @@
 import random
 from itertools import product
-import sys
-import time
-from os import system, name
 import click
 
 
 
-
+# determine possible hand values
 def hand_values(hand):
 
    possible_values = []
@@ -27,7 +24,9 @@ def hand_values(hand):
 
 
    
-   
+# show current chip count, and both hands
+# if player has not ended their action loop,
+# do not show the dealer's second card
 def show_table(d_hand, y_hand, show_dealer, chips):
     
     click.clear()
@@ -45,7 +44,9 @@ def show_table(d_hand, y_hand, show_dealer, chips):
 
 
 
-
+# create a new deck of cards
+# card suites show unicode characters.  I think
+# this is what makes it Windows-specific?
 def get_deck(num_decks=1):
 
     # Create a deck of cards
@@ -76,170 +77,3 @@ def deal(num_decks=1):
 
 
 
-
-"""
-# Main Game loop
-while True:
-
-
-    
-    bet = 10
-    betting = True
-    
-    # Individual Hand loop
-    while True:
-    
-        show_table(dealer_hand, your_hand, betting, chips)
-        
-        i = 4
-        
-        # Check for blackjack - 
-        if (max(hand_values(your_hand)) == 21) and i == 4:
-        
-            sys.stdout.write('You have BLACKJACK')
-            sys.stdout.write('\n')
-            time.sleep(2)
-        
-            if max(hand_values(dealer_hand)) == 21:
-                sys.stdout.write('...but SO DOES THE DEALER (bummer).  PUSH')
-                sys.stdout.write('\n')
-                time.sleep(1)
-            else:
-                sys.stdout.write('... and the dealer does not.  YOU WIN')
-                sys.stdout.write('\n')
-                chips+=(bet*1.5)
-                time.sleep(1)
-            break
-            
-            
-        # Check for 21
-        if (min(hand_values(your_hand)) == 21) or (max(hand_values(your_hand)) == 21):
-            
-            sys.stdout.write('You have 21')
-            sys.stdout.write('\n')
-            your_score = 21
-            betting = False
-            break
-        
-
-        
-        if min(hand_values(your_hand)) < 21:
-        
-            while True:
-            
-                if i == 4:
-                    sys.stdout.write('Choose your action:  Hit (H) / Stay (S) / Double-Down (D) >>> ')
-                    your_action = input()
-                    if your_action.lower() not in ('h', 's', 'd'):
-                        sys.stdout.write('\n')
-                        sys.stdout.write('Invalid Response')
-                        continue
-                    else:
-                        break
-                else:
-                    sys.stdout.write('Choose your action:  Hit (H) / Stay (S) >>> ')
-                    your_action = input()
-                    if your_action.lower() not in ('h', 's'):
-                        sys.stdout.write('\n')
-                        sys.stdout.write('Invalid Response')
-                        continue
-                    else:
-                        break
-                        
-                        
-                        
-            if your_action.lower() == 's':
-                
-                if max(hand_values(your_hand)) > 21:
-                    your_score = min(hand_values(your_hand))
-                else:
-                    your_score = max(hand_values(your_hand))
-   
-                betting = False
-                break
-                
-                
-            if your_action.lower() == 'd':
-                
-                bet*=2
-                
-                your_hand.append(deck[i])
-                i+=1
-                
-                if max(hand_values(your_hand)) > 21:
-                    your_score = min(hand_values(your_hand))
-                else:
-                    your_score = max(hand_values(your_hand))
-                break
-   
-   
-            if your_action.lower() == 'h':
-                
-                your_hand.append(deck[i])
-                i+=1
-                continue
-   
-   
-        else:
-            sys.stdout.write('BUST.  You lose.')
-            sys.stdout.write('\n')
-            your_score = -1
-            
-            break
-            
-    
-    
-    betting = False
-    
-    while True:
-    
-        if your_score == -1:
-            break
-    
-        show_table(dealer_hand, your_hand, betting, chips)
-        
-        if (hand_values(dealer_hand) == [7, 17]) or (max(hand_values(dealer_hand)) < 17):
-            
-            dealer_hand.append(deck[i])
-            i+=1
-            show_table(dealer_hand, your_hand, betting, chips)
-            time.sleep(2)
-        
-        else:
-            break
-            
-    if max(hand_values(dealer_hand)) > 21:
-        dealer_score = min(hand_values(dealer_hand))
-    else:
-        dealer_score = max(hand_values(dealer_hand))
-                    
-    if dealer_score > 21:
-        dealer_score = 0
-        
-        
-    if dealer_score > your_score:
-        sys.stdout.write('You lose')
-        sys.stdout.write('\n')
-        chips-=bet
-    elif dealer_score == your_score:
-        sys.stdout.write('PUSH')
-        sys.stdout.write('\n')
-    else:
-        sys.stdout.write('You Win!')
-        sys.stdout.write('\n')
-        chips+=bet
-    
-    
-    
-    
-    play_again = input('Press "y" to play again >>>')
-    
-    if play_again.lower() == "y":
-        continue
-    else:
-        print('thanks for playing!')
-        break
-   
-   
-   
-"""
